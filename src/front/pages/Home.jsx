@@ -12,7 +12,7 @@ export const Home = () => {
 
 			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
 
-			const response = await fetch(backendUrl + "/api/hello")
+			const response = await fetch( "https://fluffy-guide-pjjvxpj95gqphxvj-3001.app.github.dev/api/hello")
 			const data = await response.json()
 
 			if (response.ok) dispatch({ type: "set_hello", payload: data.message })

@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { login } from '../fetchs/fetchs';
+import { login } from '../services/fetchs';
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const { store, dispatch } = useGlobalReducer()
   const handleLogin = () => {
     if (!email || !password) {
       console.log("Faltan datos");
       return;
     }
-    login({ email, password });
+    login({ email, password ,dispatch});
   };
 
   return (
