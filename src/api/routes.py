@@ -6,7 +6,7 @@ from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 #esta es la importacion para generar los token
-from flask_jwt_extended import create_access_token, jwt_manager,jwt_required
+from flask_jwt_extended import create_access_token, jwt_manager,jwt_required,get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -46,7 +46,7 @@ def create_token():
     if not check_password_hash(user.password, password):
         return jsonify({"msg": "Invalid email or password"}), 401
 
-    token = create_access_token(identity=user.id)
+    token = create_access_token(identity=str(user.id))
 
     return jsonify({'token': token, 'user': user.serialize()}), 200
  
@@ -81,12 +81,11 @@ def register_user():
 
     return jsonify({"msg": "User registered successfully"}), 201
 
-
 @api.route('/profile', methods=['GET'])
-@jwt_required()  # 🔒 Esta línea protege la ruta
-def profile():
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
+@jwt_required()
+def get_profile():
+    user_id = int(get_jwt_identity())
+    user = db.session.get(User, user_id)
 
     if not user:
         return jsonify({"msg": "User not found"}), 404

@@ -1,0 +1,16 @@
+.log{
+    border-radius: 25px;
+      background-color: rgba(241, 252, 255, 0.092);
+
+}
+body{
+    background-color: black;
+    color: bisque;
+}
+.email ,  .password{
+    border-radius: 20px;
+}
+.navbar{
+    color: bisque;
+    background-color: darkslategrey;
+}
