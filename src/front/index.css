@@ -3,9 +3,11 @@
       background-color: rgba(241, 252, 255, 0.092);
 
 }
-body{
-    background-color: black;
+body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* azul oscuro degradado */
     color: bisque;
+    min-height: 100vh;
+    margin: 0;
 }
 .email ,  .password{
     border-radius: 20px;

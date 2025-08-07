@@ -7,8 +7,10 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 #esta es la importacion para generar los token
 from flask_jwt_extended import create_access_token, jwt_manager,jwt_required,get_jwt_identity
+#esta es para poder hashar la contraseña que nos entran
 from werkzeug.security import generate_password_hash, check_password_hash
-
+# Esto es para el tiempo de xpiración del token
+from datetime import timedelta
 
 
 api = Blueprint('api', __name__)
@@ -46,7 +48,7 @@ def create_token():
     if not check_password_hash(user.password, password):
         return jsonify({"msg": "Invalid email or password"}), 401
 
-    token = create_access_token(identity=str(user.id))
+    token = create_access_token(identity=str(user.id),additional_claims={"email": user.email},expires_delta=timedelta(hours=2))
 
     return jsonify({'token': token, 'user': user.serialize()}), 200
  
@@ -56,7 +58,7 @@ def create_token():
 
 @api.route('/register', methods=['POST','GET'])
 def register_user():
-    email = request.json.get('email', None)
+    email = request.json.get('email', None)    
     password = request.json.get('password', None)
     
     
@@ -81,6 +83,8 @@ def register_user():
 
     return jsonify({"msg": "User registered successfully"}), 201
 
+
+#con esto hacemos la ruta protegida para un usuario donde carga su perfil.
 @api.route('/profile', methods=['GET'])
 @jwt_required()
 def get_profile():
